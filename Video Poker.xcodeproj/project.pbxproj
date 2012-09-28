@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		361AFBA71615691600AF8D9F /* NSCountedSet+SuperCountedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 361AFBA61615691600AF8D9F /* NSCountedSet+SuperCountedSet.m */; };
 		364776FC15EA037200159924 /* VideoPokerRound.m in Sources */ = {isa = PBXBuildFile; fileRef = 364776FB15EA037200159924 /* VideoPokerRound.m */; };
 		366AF90B15DF610D00635FDB /* PokerHand+HandExplanationStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 366AF90A15DF610D00635FDB /* PokerHand+HandExplanationStrings.m */; };
 		366AF90E15DF649F00635FDB /* DealButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 366AF90D15DF649F00635FDB /* DealButton.png */; };
@@ -25,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		361AFBA51615691600AF8D9F /* NSCountedSet+SuperCountedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCountedSet+SuperCountedSet.h"; sourceTree = "<group>"; };
+		361AFBA61615691600AF8D9F /* NSCountedSet+SuperCountedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCountedSet+SuperCountedSet.m"; sourceTree = "<group>"; };
 		364776FA15EA037200159924 /* VideoPokerRound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPokerRound.h; sourceTree = "<group>"; };
 		364776FB15EA037200159924 /* VideoPokerRound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPokerRound.m; sourceTree = "<group>"; };
 		366AF90915DF610D00635FDB /* PokerHand+HandExplanationStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PokerHand+HandExplanationStrings.h"; sourceTree = "<group>"; };
@@ -125,6 +128,8 @@
 				3688E2CA15DF358A000112CB /* PokerTableWC.m */,
 				3688E2CC15DF361B000112CB /* PokerTableWindow.xib */,
 				366AF90D15DF649F00635FDB /* DealButton.png */,
+				361AFBA51615691600AF8D9F /* NSCountedSet+SuperCountedSet.h */,
+				361AFBA61615691600AF8D9F /* NSCountedSet+SuperCountedSet.m */,
 			);
 			path = "Video Poker";
 			sourceTree = "<group>";
@@ -238,6 +243,7 @@
 				3688E2D415DF3C1E000112CB /* PokerHand.m in Sources */,
 				366AF90B15DF610D00635FDB /* PokerHand+HandExplanationStrings.m in Sources */,
 				364776FC15EA037200159924 /* VideoPokerRound.m in Sources */,
+				361AFBA71615691600AF8D9F /* NSCountedSet+SuperCountedSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

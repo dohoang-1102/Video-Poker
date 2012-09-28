@@ -94,11 +94,22 @@
 }
 
 
+-(NSCountedSet*)countedSetOfHardValues
+{
+    NSCountedSet *analyzer = [NSCountedSet set];
+    for (Card *aCard in self.cards) {
+        [analyzer addObject: aCard.hardValue];
+    }
+    return analyzer;
+}
+
+
+
 -(void)updateValueAnalyzerDictionary
 {
+    
     _valueAnalyzerDictionary = [NSMutableDictionary dictionary];
     for (Card *aCard in self.cards) {
-
 
         if ( ![_valueAnalyzerDictionary.allKeys containsObject: aCard.hardValue] ) {
 
@@ -223,11 +234,18 @@
 
 -(BOOL)isFlush
 {
-    return self.result == PokerHandResultFlush;
+    NSCountedSet *flushChecker = [NSCountedSet set];
+
+    for (Card *aCard in self.cards)
+         [flushChecker addObject: aCard.suitString];
+    
+    return flushChecker.count == 1;
 }
 
 -(BOOL)isFullHouse
 {
+
+    
     return self.result == PokerHandResultFullHouse;
 }
 
