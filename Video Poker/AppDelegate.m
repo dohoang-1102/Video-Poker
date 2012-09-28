@@ -14,6 +14,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    NSLog(@"THIS SUCKER IS IN THE SECOND BRANCH");
+    
+    
     // Insert code here to initialize your application
     _ptwc = [[PokerTableWC alloc] initWithWindowNibName: @"PokerTableWindow"];
     [_ptwc showWindow: self];
