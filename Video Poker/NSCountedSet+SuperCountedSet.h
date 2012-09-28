@@ -16,4 +16,8 @@
 -(NSArray *)arrayOfCounts;
 -(NSArray *)arrayOfCountsAscending;
 -(NSArray *)arrayOfCountsDescending;
+
+
+-(NSArray*)objectsInOrderOfCountAscending;
+-(NSArray*)objectsInOrderOfCountDescending;
 @end

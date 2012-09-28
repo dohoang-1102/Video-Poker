@@ -331,6 +331,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Video Poker/Video Poker.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Video Poker\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Video Poker/Video Poker-Prefix.pch";
 				INFOPLIST_FILE = "Video Poker/Video Poker-Info.plist";
@@ -344,6 +348,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Video Poker/Video Poker.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Video Poker\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Video Poker/Video Poker-Prefix.pch";
 				INFOPLIST_FILE = "Video Poker/Video Poker-Info.plist";

@@ -42,7 +42,6 @@
     return [self highCardExplanationString];
 }
 
-
 -(NSString *)highCardExplanationString
 {
     NSArray *canonicalArray = [self canonicalHandValueArray];
@@ -60,7 +59,6 @@
     
     return [NSString stringWithFormat: @"Pair of %@s with kickers %@", pairNumber, [kickers componentsJoinedByString: @", "]];
 }
-
 
 
 -(NSString *)twoPairsExplanationString

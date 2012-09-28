@@ -17,23 +17,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-//    _ptwc = [[PokerTableWC alloc] initWithWindowNibName: @"PokerTableWindow"];
-//    [_ptwc showWindow: self];
-    
-    
-    NSCountedSet *analyzer = [NSCountedSet set];
-    for (int i = 0; i < 10000; i++) {
-        [analyzer addObject: @( arc4random() % 5 + 1 )];
-    }
-    
-    NSLog(@"%@", analyzer.arrayOfCountsAscending);
-    NSLog(@"%@", analyzer.arrayOfCountsDescending);
-    
-    
-    
-
-    
-
+    _ptwc = [[PokerTableWC alloc] initWithWindowNibName: @"PokerTableWindow"];
+    [_ptwc showWindow: self];
 }
 
 @end

@@ -36,10 +36,8 @@ typedef enum : NSInteger {
 
 
 // came from inside
-@property (strong) NSMutableDictionary *valueAnalyzerDictionary;
 @property (assign) PokerHandResult result;
-@property (readonly) BOOL isHighStraight;
-@property (readonly) BOOL isLowStraight;
+
 
 
 +(PokerHand*)pokerHandWithCards:(NSArray*)cards;

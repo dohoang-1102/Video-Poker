@@ -7,11 +7,14 @@
 #define DescendingIntValueSortDescriptor [NSSortDescriptor sortDescriptorWithKey: @"intValue" ascending: NO]
 #define kHandSizeLimit 5
 
+#import "NSCountedSet+SuperCountedSet.h"
 #import "PokerHand.h"
 #import "Card.h"
 #import "Deck.h"
 
 @interface PokerHand ()
+@property (readonly) BOOL isHighStraight;
+@property (readonly) BOOL isLowStraight;
 @end
 
 
@@ -38,7 +41,6 @@
     
     PokerHand *newVph = [[PokerHand alloc] init];
     newVph.cards = [NSMutableArray arrayWithArray: cards];
-    [newVph updateValueAnalyzerDictionary];
     [newVph analyzeHandToSetResultStatus];
     return newVph;
 }
@@ -52,7 +54,6 @@
     NSArray *fiveCards = [aDeck drawNumberOfCards: kHandSizeLimit];
 
     [newHand.cards addObjectsFromArray: fiveCards];
-    [newHand updateValueAnalyzerDictionary];
     [newHand analyzeHandToSetResultStatus];
 
     return newHand;
@@ -62,7 +63,6 @@
 -(void)replaceCardsAtIndexes:(NSIndexSet*)indexes withCards:(NSArray*)cards
 {
     [self.cards replaceObjectsAtIndexes: indexes withObjects: cards];
-    [self updateValueAnalyzerDictionary];
     [self analyzeHandToSetResultStatus];
 }
 
@@ -70,7 +70,6 @@
 -(void)replaceCard:(Card*)discard WithCard:(Card*)newCard
 {
     [super replaceCard: discard WithCard: newCard];
-    [self updateValueAnalyzerDictionary];
     [self analyzeHandToSetResultStatus];
 }
 
@@ -81,7 +80,6 @@
         return;
     
     [super addCard: aCard];
-    [self updateValueAnalyzerDictionary];
     [self analyzeHandToSetResultStatus];
 }
 
@@ -89,7 +87,6 @@
 -(void)removeCard:(Card *)aCard
 {
     [super removeCard: aCard];
-    [self updateValueAnalyzerDictionary];
     [self analyzeHandToSetResultStatus];
 }
 
@@ -105,56 +102,34 @@
 
 
 
--(void)updateValueAnalyzerDictionary
-{
-    
-    _valueAnalyzerDictionary = [NSMutableDictionary dictionary];
-    for (Card *aCard in self.cards) {
-
-        if ( ![_valueAnalyzerDictionary.allKeys containsObject: aCard.hardValue] ) {
-
-            // first one found, give it count of one
-            _valueAnalyzerDictionary[aCard.hardValue] = @1;
-
-        } else {
-
-            // already in dictionary - increment the count
-            NSNumber *oldCardValueCount = _valueAnalyzerDictionary[aCard.hardValue];
-            NSNumber *newCardValueCount = @( oldCardValueCount.intValue + 1 );
-            _valueAnalyzerDictionary[aCard.hardValue] = newCardValueCount;
-
-        }
-    }    
-}
-
 
 -(void)analyzeHandToSetResultStatus
 {
-    if ([self analyzerFoundRoyalFlush])
+    if (self.isRoyalStraightFlush)
         self.result = PokerHandResultRoyalStraightFlush;
     
-    else if ([self analyzerFoundStraightFlush])
+    else if (self.isStraightFlush)
         self.result = PokerHandResultStraightFlush;
     
-    else if ([self analyzerFoundFourOfAKind])
+    else if (self.isFourOfAKind)
         self.result = PokerHandResultFourOfAKind;
     
-    else if ([self analyzerFoundFullHouse])
+    else if (self.isFullHouse)
         self.result = PokerHandResultFullHouse;
     
-    else if ([self analyzerFoundFlush])
+    else if (self.isFlush)
         self.result = PokerHandResultFlush;
     
-    else if ([self analyzerFoundStraight])
+    else if (self.isStraight)
         self.result = PokerHandResultStraight;
     
-    else if ([self analyzerFoundThreeOfAKind])
+    else if (self.isThreeOfAKind)
         self.result = PokerHandResultThreeOfAKind;
 
-    else if ([self analyzerFoundTwoPairs])
+    else if (self.isTwoPairs)
         self.result = PokerHandResultTwoPairs;
 
-    else if ([self analyzerFoundOnePair])
+    else if (self.isOnePair)
         self.result = PokerHandResultOnePair;
     
     else
@@ -169,40 +144,24 @@
 
 
 
-
--(NSArray*)distinctCardValueNumbersFromLowestToHighest
-{
-    // values and keyes are both numbers
-    // key - card value number
-    // value - appearance count
-    
-    NSSortDescriptor *ascendingIntValues = [NSSortDescriptor sortDescriptorWithKey: @"intValue" ascending: YES];
-    return [self.valueAnalyzerDictionary.allKeys sortedArrayUsingDescriptors: @[ ascendingIntValues ]];
-}
-
-
-
--(NSArray*)cardAppearanceCountNumbersFromHighestToLowest
-{
-    NSSortDescriptor *descendingAppearanceCounts = [NSSortDescriptor sortDescriptorWithKey: @"intValue" ascending: NO];
-    return [self.valueAnalyzerDictionary.allValues sortedArrayUsingDescriptors: @[ descendingAppearanceCounts ]];
-}
-
-
-
 -(NSArray*)cardValueNumbersSortedByAppearanceCountNumbers
 {
-    // you can reverse the normal order by comparing second object with first object
-    // orthodox sort: 1 compare 2
-    // backward sort: 2 compare 1
     
-    NSArray *sortedValues = [self.valueAnalyzerDictionary keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return [obj2 compare: obj1];
-    }];
+    // lots of this number, less of this number, and even less of this number ...
+    // ex: 3 2s, 1 4, and 1 10
     
-    return sortedValues;
+    NSCountedSet *cs = [self countedSetOfHardValues];
+    return cs.objectsInOrderOfCountDescending;    
 }
 
+
+-(NSArray*)distinctCardValuesInDescendingOrder
+{
+    NSCountedSet *cs = [self countedSetOfHardValues];
+    NSMutableArray *values = [NSMutableArray arrayWithArray: cs.allObjects];
+    NSSortDescriptor *descIntValSD = [NSSortDescriptor sortDescriptorWithKey: @"intValue" ascending: NO];
+    return [values sortedArrayUsingDescriptors: @[ descIntValSD ] ];
+}
 
 #pragma mark - Hand BOOLs
 
@@ -214,75 +173,23 @@
 
 -(BOOL)isOnePair
 {
-    return self.result == PokerHandResultOnePair;
+    NSCountedSet *cs = [self countedSetOfHardValues];
+    NSArray *onePairPattern = @[ @2, @1, @1, @1 ];
+    return [onePairPattern isEqualToArray: cs.arrayOfCountsDescending];
 }
 
 -(BOOL)isTwoPairs
 {
-    return self.result == PokerHandResultTwoPairs;
+    NSCountedSet* cs = [self countedSetOfHardValues];
+    NSArray* twoPairPattern = @[ @2, @2, @1 ];
+    return [twoPairPattern isEqualToArray: cs.arrayOfCountsDescending];
 }
 
 -(BOOL)isThreeOfAKind
 {
-    return self.result == PokerHandResultThreeOfAKind;
-}
-
--(BOOL)isStraight
-{
-    return self.result == PokerHandResultStraight;
-}
-
--(BOOL)isFlush
-{
-    NSCountedSet *flushChecker = [NSCountedSet set];
-
-    for (Card *aCard in self.cards)
-         [flushChecker addObject: aCard.suitString];
-    
-    return flushChecker.count == 1;
-}
-
--(BOOL)isFullHouse
-{
-
-    
-    return self.result == PokerHandResultFullHouse;
-}
-
--(BOOL)isFourOfAKind
-{
-    return self.result == PokerHandResultFourOfAKind;
-}
-
--(BOOL)isStraightFlush
-{
-    return self.result == PokerHandResultStraightFlush;
-}
-
--(BOOL)isRoyalStraightFlush
-{
-    return self.result == PokerHandResultRoyalStraightFlush;
-}
-
-
-
-
-#pragma mark - Straight and Flush Hands
-
-
--(BOOL)analyzerFoundFlush
-{
-    Card *firstCard = self.cards[0];
-    __block BOOL flush = YES;
-    
-    [self.cards enumerateObjectsUsingBlock:^(Card *currentCard, NSUInteger idx, BOOL *stop) {
-        if (currentCard.suit != firstCard.suit) {
-            flush = NO;
-            *stop = YES;
-        }
-    }];
-    
-    return flush;
+    NSCountedSet* cs = [self countedSetOfHardValues];
+    NSArray* threeOfAKindPattern = @[ @3, @1, @1 ];
+    return [threeOfAKindPattern isEqualToArray: cs.arrayOfCountsDescending];
 }
 
 -(BOOL)isHighStraight
@@ -300,7 +207,7 @@
     
     if (tenCard.value != CardValueTen)
         return NO;
-
+    
     if (jackCard.value != CardValueJack)
         return NO;
     
@@ -322,10 +229,10 @@
     Card *threeCard = ascendingValues[2];
     Card *fourCard = ascendingValues[3];
     Card *fiveCard = ascendingValues[4];
-
+    
     if (aceCard.value != CardValueAce)
         return NO;
-
+    
     if (twoCard.value != CardValueTwo)
         return NO;
     
@@ -341,94 +248,88 @@
     return YES;
 }
 
--(BOOL)analyzerFoundStraight
+-(BOOL)isStraight
 {
-    if (self.isHighStraight)
+    if (self.isHighStraight || self.isLowStraight)
         return YES;
     
-    if (self.isLowStraight)
-        return YES;
-    
-    if (_valueAnalyzerDictionary.count != 5)
+    // have to have five cards to have a straight
+    NSCountedSet *cs = [self countedSetOfHardValues];
+    if (cs.count < 5)
         return NO;
     
-    NSArray *cardValues = [self distinctCardValueNumbersFromLowestToHighest];
-
-    NSNumber *lowestNumber = cardValues[0];
-    NSNumber *secondNumber = @( lowestNumber.intValue + 1 );
-    NSNumber *thirdNumber  = @( lowestNumber.intValue + 2 );
-    NSNumber *fourthNumber = @( lowestNumber.intValue + 3 );
-    NSNumber *fifthNumber  = @( lowestNumber.intValue + 4 );
     
-    NSArray *straightFromLowest = @[ lowestNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber ];
-
-    return [cardValues isEqualToArray: straightFromLowest];
-}
-
--(BOOL)analyzerFoundStraightFlush
-{
-    return (self.isStraight && self.isFlush);
-}
-
--(BOOL)analyzerFoundRoyalFlush
-{
-    return (self.isHighStraight && self.isFlush);
-}
-
--(BOOL)analyzerFoundOnePair
-{
-    // has four kinds of cards
-    // 2 - 1 - 1 - 1
+    // need to check the value of the hands
+    // n, n+1, n+2, n+3, n+4
     
-    return ( _valueAnalyzerDictionary.count == 4 );
-}
-
--(BOOL)analyzerFoundTwoPairs
-{
-    // there are three kinds of card values
-    // not a three of a kind
-    // counts: 2 - 2 - 1 (descending)
+    NSSortDescriptor *descendingCardValuesDescriptor = [NSSortDescriptor sortDescriptorWithKey: @"value" ascending: NO];
+    NSArray *cardsInDescendingValue = [self.cards sortedArrayUsingDescriptors: @[ descendingCardValuesDescriptor ]];
     
-    NSArray *highToLowAppearance = [self cardAppearanceCountNumbersFromHighestToLowest];
-    NSArray *twoTwoOne = @[ @2, @2, @1 ];
-    return [highToLowAppearance isEqualToArray: twoTwoOne];    
-}
-
--(BOOL)analyzerFoundFullHouse
-{
-    // 3 - 2
-
-    // there are only two types of card values
-    // the counts are 3 - 2
+    Card* highestCard       = cardsInDescendingValue[0];
+    Card* secondHighestCard = cardsInDescendingValue[1];
+    Card* thirdHighestCard  = cardsInDescendingValue[2];
+    Card* fourthHighestCard = cardsInDescendingValue[3];
+    Card* fifthHighestCard  = cardsInDescendingValue[4];
     
-    NSArray *highToLowAppearance = [self cardAppearanceCountNumbersFromHighestToLowest];
-    NSArray *threeTwo = @[ @3, @2 ];
-    return [highToLowAppearance isEqualToArray: threeTwo];
-}
-
--(BOOL)analyzerFoundThreeOfAKind
-{
-    // 3 - 1 - 1
-
-    if (_valueAnalyzerDictionary.count != 3)
-        return NO;
+    int highestCardValue       = highestCard.hardValue.intValue;
+    int secondHighestCardValue = secondHighestCard.hardValue.intValue;
+    int thirdHighestCardValue  = thirdHighestCard.hardValue.intValue;
+    int fourthHighestCardValue = fourthHighestCard.hardValue.intValue;
+    int fifthHighestCardValue  = fifthHighestCard.hardValue.intValue;
     
-    NSArray *highToLowAppearance = [self cardAppearanceCountNumbersFromHighestToLowest];
-    NSArray *threeOneOne = @[ @3, @1, @1 ];
-    return [highToLowAppearance isEqualToArray: threeOneOne];
-}
-
--(BOOL)analyzerFoundFourOfAKind
-{
-    // 4 - 1
+    if (highestCardValue == secondHighestCardValue + 1)
+        if (highestCardValue == thirdHighestCardValue + 2)
+            if (highestCardValue == fourthHighestCardValue + 3)
+                if (highestCardValue == fifthHighestCardValue + 4)
+                    return YES;
     
-    if (_valueAnalyzerDictionary.count != 2)
-        return NO;
+    return NO;
+    
+    
+    
 
-    NSArray *highToLowApperance = [self cardAppearanceCountNumbersFromHighestToLowest];
-    NSArray *fourOne = @[ @4, @1 ];
-    return [highToLowApperance isEqualToArray: fourOne];
+    
+    
+    
+//    cs.arrayOfCountsDescending
+    
+    return self.result == PokerHandResultStraight;
 }
+
+-(BOOL)isFlush
+{
+    NSCountedSet *flushChecker = [NSCountedSet set];
+
+    for (Card *aCard in self.cards)
+         [flushChecker addObject: aCard.suitString];
+    
+    return flushChecker.count == 1;
+}
+
+-(BOOL)isFullHouse
+{
+    NSCountedSet* cs = [self countedSetOfHardValues];
+    NSArray* fullHousePattern = @[ @3, @2 ];
+    return [fullHousePattern isEqualToArray: cs.arrayOfCountsDescending];
+}
+
+-(BOOL)isFourOfAKind
+{
+    NSCountedSet *cs = [self countedSetOfHardValues];
+    NSArray *fourOfAKindPattern = @[ @4, @1 ];
+    return [fourOfAKindPattern isEqualToArray: cs.arrayOfCountsDescending];
+}
+
+-(BOOL)isStraightFlush
+{
+    return (self.isStraight && self.isFlush && !self.isHighStraight);
+}
+
+-(BOOL)isRoyalStraightFlush
+{
+    return (self.isFlush && self.isHighStraight);
+}
+
 
 
 
@@ -697,7 +598,7 @@
     if (self.result != PokerHandResultFlush)
         return nil;
     
-    return [_valueAnalyzerDictionary.allKeys sortedArrayUsingDescriptors: @[ DescendingIntValueSortDescriptor ]];
+    return [self distinctCardValuesInDescendingOrder];
 }
 
 
@@ -744,7 +645,7 @@
     if (self.isLowStraight)
         return @[ @5, @4, @3, @2, @1 ];
     
-    return [_valueAnalyzerDictionary.allKeys sortedArrayUsingDescriptors: @[ DescendingIntValueSortDescriptor ]];
+    return [self distinctCardValuesInDescendingOrder];
 }
 
 
@@ -896,7 +797,6 @@
 }
 
 
-
 -(NSArray *)onePairKickersInDescendingOrder
 {
     // ONE PAIR PATTERN
@@ -925,7 +825,7 @@
 
 -(NSArray *)highCardNumberValues
 {
-    return [_valueAnalyzerDictionary.allKeys sortedArrayUsingDescriptors: @[ DescendingIntValueSortDescriptor ]];
+    return [self distinctCardValuesInDescendingOrder];
 }
 
 

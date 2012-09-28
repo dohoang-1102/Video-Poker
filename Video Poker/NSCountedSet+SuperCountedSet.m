@@ -112,4 +112,39 @@
     return [counts sortedArrayUsingDescriptors: @[ desc ]];
 }
 
+
+
+#pragma mark - Objects ordered by count
+
+
+-(NSArray *)objectsInOrderOfCountAscending
+{
+    NSLog(@"Objects in count order ascending");
+    NSMutableArray *ascendingCountObjects = [NSMutableArray arrayWithArray: self.allObjects];
+    
+    [ascendingCountObjects sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSUInteger objOneCount = [self countForObject: obj1];
+        NSUInteger objTwoCount = [self countForObject: obj2];
+        return [ @(objOneCount) compare: @(objTwoCount) ];
+    }];
+
+    return ascendingCountObjects;
+}
+
+
+-(NSArray *)objectsInOrderOfCountDescending
+{
+    NSMutableArray *descendingCountObjects = [NSMutableArray arrayWithArray: self.allObjects];
+    
+    [descendingCountObjects sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSUInteger objOneCount = [self countForObject: obj1];
+        NSUInteger objTwoCount = [self countForObject: obj2];
+        return [ @(objTwoCount) compare: @(objOneCount) ];
+    }];
+    
+    return descendingCountObjects;
+}
+
+
+
 @end

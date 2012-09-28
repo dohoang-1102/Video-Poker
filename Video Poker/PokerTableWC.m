@@ -67,11 +67,11 @@ NSString* holdCardString = @"HOLD";
 
 -(void)enablePushingCardButtons
 {
-    [_cardButton1 setEnabled: NO];
-    [_cardButton2 setEnabled: NO];
-    [_cardButton3 setEnabled: NO];
-    [_cardButton4 setEnabled: NO];
-    [_cardButton5 setEnabled: NO];
+    [_cardButton1 setEnabled: YES];
+    [_cardButton2 setEnabled: YES];
+    [_cardButton3 setEnabled: YES];
+    [_cardButton4 setEnabled: YES];
+    [_cardButton5 setEnabled: YES];
 }
 
 
