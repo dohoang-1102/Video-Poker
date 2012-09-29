@@ -6,15 +6,17 @@
 
 #import "PokerTableWC.h"
 
-#import "VideoPokerRound.h"
-
 #import "Card.h"
 #import "Deck.h"
 #import "Hand.h"
 #import "PokerHand.h"
+#import "VideoPokerRound.h"
 #import "PokerHand+HandExplanationStrings.h"
 
-NSString* holdCardString = @"HOLD";
+
+static NSString* const holdCardString = @"HOLD";
+
+
 
 @interface PokerTableWC ()
 
@@ -122,6 +124,7 @@ NSString* holdCardString = @"HOLD";
 {
     [_currentRound moveToNextRoundPhase];
     
+    
     if (_currentRound.hasDiscarded) {
         [self disablePushingCardButtons];
     } else {
@@ -130,13 +133,14 @@ NSString* holdCardString = @"HOLD";
     }
     
     
+    // UPDATE THE UI
     [self updateDealButtonLabel];
     [self updateCardButtonLabels];
     [self updateResultLabel];
 }
 
 
-- (IBAction)pushedFirstCardButton:(NSButton*)sender
+- (IBAction)pushedHoldCardButton:(NSButton*)sender
 {
     NSTextField* correspondingHoldLabel = nil;
     

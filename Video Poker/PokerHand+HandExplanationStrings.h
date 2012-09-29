@@ -5,7 +5,5 @@
 
 #import "PokerHand.h"
 @interface PokerHand (HandExplanationStrings)
-
 -(NSString*)handExplanationString;
-
 @end

@@ -130,5 +130,69 @@
     return NO;
 }
 
+-(BOOL)isAce
+{
+    return _value == CardValueAce;
+}
+
+-(BOOL)isTwo
+{
+    return _value == CardValueTwo;
+}
+
+-(BOOL)isThree
+{
+    return _value == CardValueThree;
+}
+
+-(BOOL)isFour
+{
+    return _value == CardValueFour;
+}
+
+-(BOOL)isFive
+{
+    return _value == CardValueFive;
+}
+
+-(BOOL)isSix
+{
+    return _value == CardValueSix;
+}
+
+-(BOOL)isSeven
+{
+    return _value == CardValueSeven;
+}
+
+-(BOOL)isEight
+{
+    return _value == CardValueEight;
+}
+
+-(BOOL)isNine
+{
+    return _value == CardValueNine;
+}
+
+-(BOOL)isTen
+{
+    return _value = CardValueTen;
+}
+
+-(BOOL)isJack
+{
+    return _value = CardValueJack;
+}
+
+-(BOOL)isQueen
+{
+    return _value = CardValueQueen;
+}
+
+-(BOOL)isKing
+{
+    return _value = CardValueKing;
+}
 
 @end

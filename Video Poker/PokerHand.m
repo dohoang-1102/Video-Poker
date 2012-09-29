@@ -5,12 +5,16 @@
 
 
 #define DescendingIntValueSortDescriptor [NSSortDescriptor sortDescriptorWithKey: @"intValue" ascending: NO]
-#define kHandSizeLimit 5
 
+#import "PokerHand+HandExplanationStrings.h"
 #import "NSCountedSet+SuperCountedSet.h"
 #import "PokerHand.h"
 #import "Card.h"
 #import "Deck.h"
+
+
+static const int kHandSizeLimit = 5;
+
 
 @interface PokerHand ()
 @property (readonly) BOOL isHighStraight;
@@ -46,7 +50,6 @@
 }
 
 
-// try making this
 +(PokerHand*)pokerHandFromDeck:(Deck*)aDeck
 {
     PokerHand *newHand = [[PokerHand alloc] init];
@@ -202,22 +205,7 @@
     Card *queenCard = ascendingValues[3];
     Card *kingCard = ascendingValues[4];
     
-    if (aceCard.value != CardValueAce)
-        return NO;
-    
-    if (tenCard.value != CardValueTen)
-        return NO;
-    
-    if (jackCard.value != CardValueJack)
-        return NO;
-    
-    if (queenCard.value != CardValueQueen)
-        return NO;
-    
-    if (kingCard.value != CardValueKing)
-        return NO;
-    
-    return YES;
+    return (aceCard.isAce && tenCard.isTen && jackCard.isJack && queenCard.isQueen && kingCard.isKing);
 }
 
 -(BOOL)isLowStraight
@@ -230,22 +218,7 @@
     Card *fourCard = ascendingValues[3];
     Card *fiveCard = ascendingValues[4];
     
-    if (aceCard.value != CardValueAce)
-        return NO;
-    
-    if (twoCard.value != CardValueTwo)
-        return NO;
-    
-    if (threeCard.value != CardValueThree)
-        return NO;
-    
-    if (fourCard.value != CardValueFour)
-        return NO;
-    
-    if (fiveCard.value != CardValueFive)
-        return NO;
-    
-    return YES;
+    return (aceCard.isAce && twoCard.isTwo && threeCard.isThree && fourCard.isFour && fiveCard.isFive);
 }
 
 -(BOOL)isStraight
@@ -253,7 +226,7 @@
     if (self.isHighStraight || self.isLowStraight)
         return YES;
     
-    // have to have five cards to have a straight
+    // have to have five cards with different hard values to have a straight
     NSCountedSet *cs = [self countedSetOfHardValues];
     if (cs.count < 5)
         return NO;
@@ -298,6 +271,9 @@
 
 -(BOOL)isFlush
 {
+    // add suit strings to a counted set
+    // if counted set contains only one object, all the suits are equal
+    
     NSCountedSet *flushChecker = [NSCountedSet set];
 
     for (Card *aCard in self.cards)

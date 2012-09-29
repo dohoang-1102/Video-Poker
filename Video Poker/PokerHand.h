@@ -5,8 +5,6 @@
 
 #import "Hand.h"
 
-
-
 @class Deck;
 @interface PokerHand : Hand
 
@@ -34,11 +32,7 @@ typedef enum : NSInteger {
 @property (readonly) BOOL isStraightFlush;
 @property (readonly) BOOL isRoyalStraightFlush;
 
-
-// came from inside
 @property (assign) PokerHandResult result;
-
-
 
 +(PokerHand*)pokerHandWithCards:(NSArray*)cards;
 +(PokerHand*)pokerHandFromDeck:(Deck*)aDeck;
@@ -49,6 +43,9 @@ typedef enum : NSInteger {
 -(BOOL)isBetterThanHand:(PokerHand *)otherHand;
 -(BOOL)isEqualToHand:(PokerHand*)otherHand;
 -(BOOL)isWorseThanHand:(PokerHand*)otherHand;
+
 -(NSArray*)canonicalHandValueArray;
+
+
 
 @end

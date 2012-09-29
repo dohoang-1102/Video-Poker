@@ -60,7 +60,6 @@
     return [NSString stringWithFormat: @"Pair of %@s with kickers %@", pairNumber, [kickers componentsJoinedByString: @", "]];
 }
 
-
 -(NSString *)twoPairsExplanationString
 {
     NSArray *canonicalArray = [self canonicalHandValueArray];
@@ -71,8 +70,6 @@
     return [NSString stringWithFormat: @"Two Pairs %@s and %@s, with a %@ kicker", highPairNumber, lowPairNumber, kicker];
 }
 
-
-
 -(NSString *)threeOfAKindExplanationString
 {
     NSArray *canonicalArray = [self canonicalHandValueArray];
@@ -82,18 +79,12 @@
     return [NSString stringWithFormat: @"Three %@s with kickers %@", threeOfAKindNubmer, [kickers componentsJoinedByString: @", "]];
 }
 
-
-
-
 -(NSString*)straightExplanationString
 {
     NSArray *canonicalArray = [self canonicalHandValueArray];
     NSNumber *highCardNumber = canonicalArray[0];
     return [NSString stringWithFormat: @"Straight starting at %@", highCardNumber];
 }
-
-
-
 
 -(NSString*)flushExplanationString
 {
@@ -103,9 +94,6 @@
     return [NSString stringWithFormat: @"%@ flush with numbers %@", firstCard.suitString, numbersAndCommas];
 }
 
-
-
-
 -(NSString*)fullHouseExplanationString
 {
     NSArray *canonicalArray = [self canonicalHandValueArray];
@@ -113,9 +101,6 @@
     NSNumber *twoCardsValue = canonicalArray[1];
     return [NSString stringWithFormat: @"Full house %@ over %@", threeCardsValue, twoCardsValue];
 }
-
-
-
 
 -(NSString*)fourOfAKindExplanationString
 {
@@ -125,8 +110,6 @@
     return [NSString stringWithFormat: @"Four of a kind: four %@s with a %@ kicker", fourOfAKindNumber, kickerNumber];
 }
 
-
-
 -(NSString*)straightFlushExplanationString
 {
     NSArray *canonicalArray = [self canonicalHandValueArray];
@@ -134,7 +117,6 @@
     Card *firstCard = self.cards[0];
     return [NSString stringWithFormat: @"%@ Straight Flush with numbers %@", firstCard.suitString, numbersAndCommas];
 }
-
 
 -(NSString*)royalStraightFlushExplanationString
 {

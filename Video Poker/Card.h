@@ -29,11 +29,30 @@ typedef enum : NSInteger {
     } CardValue;
 
 @interface Card : NSObject
-@property (readonly) BOOL isFaceCard;
 @property (readonly) NSNumber *hardValue;
 @property (readonly) NSNumber *softValue;
 @property (nonatomic, assign) CardSuit suit;
 @property (nonatomic, assign) CardValue value;
+
+
+// Kind of card
+@property (readonly) BOOL isFaceCard;
+
+@property (readonly) BOOL isAce;
+@property (readonly) BOOL isTwo;
+@property (readonly) BOOL isThree;
+@property (readonly) BOOL isFour;
+@property (readonly) BOOL isFive;
+@property (readonly) BOOL isSix;
+@property (readonly) BOOL isSeven;
+@property (readonly) BOOL isEight;
+@property (readonly) BOOL isNine;
+@property (readonly) BOOL isTen;
+@property (readonly) BOOL isJack;
+@property (readonly) BOOL isQueen;
+@property (readonly) BOOL isKing;
+
+
 
 +(Card*)cardWithSuit:(NSInteger)zeroToThree andValue:(NSInteger)oneToThirteen;
 -(NSString*)suitString;
