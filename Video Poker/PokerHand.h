@@ -21,29 +21,20 @@ typedef enum : NSInteger {
     PokerHandResultRoyalStraightFlush
 } PokerHandResult;
 
-@property (readonly) BOOL isHighCard;
-@property (readonly) BOOL isOnePair;
-@property (readonly) BOOL isTwoPairs;
-@property (readonly) BOOL isThreeOfAKind;
-@property (readonly) BOOL isStraight;
-@property (readonly) BOOL isFlush;
-@property (readonly) BOOL isFullHouse;
-@property (readonly) BOOL isFourOfAKind;
-@property (readonly) BOOL isStraightFlush;
-@property (readonly) BOOL isRoyalStraightFlush;
-
 @property (assign) PokerHandResult result;
 
+// CREATE
 +(PokerHand*)pokerHandWithCards:(NSArray*)cards;
 +(PokerHand*)pokerHandFromDeck:(Deck*)aDeck;
 
+// CHANGE
 -(void)replaceCardsAtIndexes:(NSIndexSet*)indexes withCards:(NSArray*)cards;
 
+// COMPARE
 -(NSComparisonResult)compare:(PokerHand *)otherHand;
 -(BOOL)isBetterThanHand:(PokerHand *)otherHand;
 -(BOOL)isEqualToHand:(PokerHand*)otherHand;
 -(BOOL)isWorseThanHand:(PokerHand*)otherHand;
-
 -(NSArray*)canonicalHandValueArray;
 
 

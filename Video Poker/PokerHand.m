@@ -17,11 +17,7 @@ static const int kHandSizeLimit = 5;
 
 
 @interface PokerHand ()
-@property (readonly) BOOL isHighStraight;
-@property (readonly) BOOL isLowStraight;
 @end
-
-
 
 
 @implementation PokerHand
@@ -94,20 +90,12 @@ static const int kHandSizeLimit = 5;
 }
 
 
--(NSCountedSet*)countedSetOfHardValues
-{
-    NSCountedSet *analyzer = [NSCountedSet set];
-    for (Card *aCard in self.cards) {
-        [analyzer addObject: aCard.hardValue];
-    }
-    return analyzer;
-}
-
-
-
-
 -(void)analyzeHandToSetResultStatus
 {
+    // Check to see if hand has winning properties.
+    // Once a wining property is found, stop checking.
+    // Check in order from highest to lowest to assign the highest possible hand result.
+    
     if (self.isRoyalStraightFlush)
         self.result = PokerHandResultRoyalStraightFlush;
     
@@ -143,7 +131,27 @@ static const int kHandSizeLimit = 5;
 
 
 
-#pragma mark - Sorted Arrays
+#pragma mark - Counted Sets & Sorted Arrays
+
+
+-(NSCountedSet*)countedSetOfHardValues
+{
+    NSCountedSet *analyzer = [NSCountedSet set];
+    for (Card *aCard in self.cards) {
+        [analyzer addObject: aCard.hardValue];
+    }
+    return analyzer;
+}
+
+
+-(NSCountedSet*)countedSetOfSuits
+{
+    NSCountedSet *suits = [NSCountedSet set];
+    for (Card *aCard in self.cards) {
+        [suits addObject: aCard.suitString];
+    }
+    return suits;
+}
 
 
 
@@ -160,19 +168,24 @@ static const int kHandSizeLimit = 5;
 
 -(NSArray*)distinctCardValuesInDescendingOrder
 {
+    // returns an array of distinct NSNumbers
+    // that represent values of cards in the hand
+    // ordered from highest to lowest
+    
     NSCountedSet *cs = [self countedSetOfHardValues];
     NSMutableArray *values = [NSMutableArray arrayWithArray: cs.allObjects];
     NSSortDescriptor *descIntValSD = [NSSortDescriptor sortDescriptorWithKey: @"intValue" ascending: NO];
     return [values sortedArrayUsingDescriptors: @[ descIntValSD ] ];
 }
 
+
 #pragma mark - Hand BOOLs
 
 
--(BOOL)isHighCard
-{
-    return self.result == PokerHandResultHighCard;
-}
+// These methods overlap in some cases
+// ex. if isStrightFlush == true, isStraight == true && isFlush == true
+// use the PokerHandResult result to see what kind of hand you have
+
 
 -(BOOL)isOnePair
 {
@@ -197,89 +210,46 @@ static const int kHandSizeLimit = 5;
 
 -(BOOL)isHighStraight
 {
-    NSArray *ascendingValues = [self arrayOfCardsSortedByValueAscending: YES];
-    
-    Card *aceCard = ascendingValues[0];
-    Card *tenCard = ascendingValues[1];
-    Card *jackCard = ascendingValues[2];
-    Card *queenCard = ascendingValues[3];
-    Card *kingCard = ascendingValues[4];
-    
-    return (aceCard.isAce && tenCard.isTen && jackCard.isJack && queenCard.isQueen && kingCard.isKing);
+    NSCountedSet *hardValues = [self countedSetOfHardValues];
+    NSSet *highStraightHardValues = [NSSet setWithObjects: @14, @13, @12, @11, @10, nil];
+    return [hardValues isEqualToSet: highStraightHardValues];
 }
 
 -(BOOL)isLowStraight
 {
-    NSArray *ascendingValues = [self arrayOfCardsSortedByValueAscending: YES];
-    
-    Card *aceCard = ascendingValues[0];
-    Card *twoCard = ascendingValues[1];
-    Card *threeCard = ascendingValues[2];
-    Card *fourCard = ascendingValues[3];
-    Card *fiveCard = ascendingValues[4];
-    
-    return (aceCard.isAce && twoCard.isTwo && threeCard.isThree && fourCard.isFour && fiveCard.isFive);
+    NSCountedSet *hardValues = [self countedSetOfHardValues];
+    NSSet *lowStraightHardValues = [NSSet setWithObjects: @14, @2, @3, @4, @5, nil];
+    return [hardValues isEqualToSet: lowStraightHardValues];
 }
 
 -(BOOL)isStraight
 {
+    // Special straights
     if (self.isHighStraight || self.isLowStraight)
         return YES;
     
-    // have to have five cards with different hard values to have a straight
-    NSCountedSet *cs = [self countedSetOfHardValues];
-    if (cs.count < 5)
+
+    // must have five distinct number values
+    NSArray *distinctValues = [self distinctCardValuesInDescendingOrder];
+    if (distinctValues.count != 5)
         return NO;
     
-    
-    // need to check the value of the hands
-    // n, n+1, n+2, n+3, n+4
-    
-    NSSortDescriptor *descendingCardValuesDescriptor = [NSSortDescriptor sortDescriptorWithKey: @"value" ascending: NO];
-    NSArray *cardsInDescendingValue = [self.cards sortedArrayUsingDescriptors: @[ descendingCardValuesDescriptor ]];
-    
-    Card* highestCard       = cardsInDescendingValue[0];
-    Card* secondHighestCard = cardsInDescendingValue[1];
-    Card* thirdHighestCard  = cardsInDescendingValue[2];
-    Card* fourthHighestCard = cardsInDescendingValue[3];
-    Card* fifthHighestCard  = cardsInDescendingValue[4];
-    
-    int highestCardValue       = highestCard.hardValue.intValue;
-    int secondHighestCardValue = secondHighestCard.hardValue.intValue;
-    int thirdHighestCardValue  = thirdHighestCard.hardValue.intValue;
-    int fourthHighestCardValue = fourthHighestCard.hardValue.intValue;
-    int fifthHighestCardValue  = fifthHighestCard.hardValue.intValue;
-    
-    if (highestCardValue == secondHighestCardValue + 1)
-        if (highestCardValue == thirdHighestCardValue + 2)
-            if (highestCardValue == fourthHighestCardValue + 3)
-                if (highestCardValue == fifthHighestCardValue + 4)
-                    return YES;
-    
-    return NO;
-    
-    
-    
 
-    
-    
-    
-//    cs.arrayOfCountsDescending
-    
-    return self.result == PokerHandResultStraight;
+    // need to check the value of the hands
+    // highest value 
+    // 7, 6, 5, 4, 3
+
+    NSNumber *highestValue = distinctValues[0];
+    NSNumber *lowestValue = distinctValues[4];
+    return (highestValue.intValue - lowestValue.intValue == 4);
 }
 
 -(BOOL)isFlush
 {
-    // add suit strings to a counted set
     // if counted set contains only one object, all the suits are equal
     
-    NSCountedSet *flushChecker = [NSCountedSet set];
-
-    for (Card *aCard in self.cards)
-         [flushChecker addObject: aCard.suitString];
-    
-    return flushChecker.count == 1;
+    NSCountedSet *suits = [self countedSetOfSuits];
+    return suits.count == 1;
 }
 
 -(BOOL)isFullHouse
@@ -298,11 +268,23 @@ static const int kHandSizeLimit = 5;
 
 -(BOOL)isStraightFlush
 {
+    // dont want high straights (royal flush)
+    if (self.isHighStraight)
+        return NO;
+    
+    // must be a flush
+    if (!self.isFlush)
+        return NO;
+    
+    
     return (self.isStraight && self.isFlush && !self.isHighStraight);
 }
 
 -(BOOL)isRoyalStraightFlush
 {
+    // is a flush
+    // is a high straight
+    
     return (self.isFlush && self.isHighStraight);
 }
 

@@ -11,33 +11,32 @@
 -(NSString *)handExplanationString
 {
     
-    if (self.isOnePair)
+    if (self.result == PokerHandResultOnePair)
         return [self onePairExplanationString];
     
-    if (self.isTwoPairs)
+    if (self.result == PokerHandResultTwoPairs)
         return [self twoPairsExplanationString];
     
-    if (self.isThreeOfAKind)
+    if (self.result == PokerHandResultThreeOfAKind)
         return [self threeOfAKindExplanationString];
 
-    if (self.isStraight)
+    if (self.result == PokerHandResultStraight)
         return [self straightExplanationString];
         
-    if (self.isFlush)
+    if (self.result == PokerHandResultFlush)
         return [self flushExplanationString];
     
-    if (self.isFullHouse)
+    if (self.result == PokerHandResultFullHouse)
         return [self fullHouseExplanationString];
 
-    if (self.isFourOfAKind)
+    if (self.result == PokerHandResultFourOfAKind)
         return [self fourOfAKindExplanationString];
 
-    if (self.isStraightFlush)
+    if (self.result == PokerHandResultStraightFlush)
         return [self straightFlushExplanationString];
     
-    if (self.isRoyalStraightFlush)
+    if (self.result == PokerHandResultRoyalStraightFlush)
         return [self royalStraightFlushExplanationString];
-    
     
     return [self highCardExplanationString];
 }
@@ -117,6 +116,7 @@
     Card *firstCard = self.cards[0];
     return [NSString stringWithFormat: @"%@ Straight Flush with numbers %@", firstCard.suitString, numbersAndCommas];
 }
+
 
 -(NSString*)royalStraightFlushExplanationString
 {
