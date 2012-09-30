@@ -4,6 +4,9 @@
 //  Copyright (c) 2012 Martin Nash. All rights reserved.
 
 #import "VideoPokerRound.h"
+#import "PokerHand.h"
+#import "Card.h"
+#import "Deck.h"
 
 @interface VideoPokerRound ()
 @property (strong) Deck *theDeck;

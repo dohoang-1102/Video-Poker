@@ -8,10 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "PokerHand.h"
-#import "Card.h"
-#import "Deck.h"
-
+@class PokerHand;
 @interface VideoPokerRound : NSObject
 
 @property (strong) PokerHand *theHand;

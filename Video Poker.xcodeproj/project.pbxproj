@@ -10,7 +10,7 @@
 		361AFBA71615691600AF8D9F /* NSCountedSet+SuperCountedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 361AFBA61615691600AF8D9F /* NSCountedSet+SuperCountedSet.m */; };
 		364776FC15EA037200159924 /* VideoPokerRound.m in Sources */ = {isa = PBXBuildFile; fileRef = 364776FB15EA037200159924 /* VideoPokerRound.m */; };
 		366AF90B15DF610D00635FDB /* PokerHand+HandExplanationStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 366AF90A15DF610D00635FDB /* PokerHand+HandExplanationStrings.m */; };
-		366AF90E15DF649F00635FDB /* DealButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 366AF90D15DF649F00635FDB /* DealButton.png */; };
+		36828BE616186D5D002097E8 /* PayoutTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 36828BE516186D5D002097E8 /* PayoutTable.m */; };
 		3688E29C15DF34CA000112CB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3688E29B15DF34CA000112CB /* Cocoa.framework */; };
 		3688E2A615DF34CA000112CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3688E2A415DF34CA000112CB /* InfoPlist.strings */; };
 		3688E2A815DF34CA000112CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3688E2A715DF34CA000112CB /* main.m */; };
@@ -32,7 +32,8 @@
 		364776FB15EA037200159924 /* VideoPokerRound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPokerRound.m; sourceTree = "<group>"; };
 		366AF90915DF610D00635FDB /* PokerHand+HandExplanationStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PokerHand+HandExplanationStrings.h"; sourceTree = "<group>"; };
 		366AF90A15DF610D00635FDB /* PokerHand+HandExplanationStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PokerHand+HandExplanationStrings.m"; sourceTree = "<group>"; };
-		366AF90D15DF649F00635FDB /* DealButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DealButton.png; sourceTree = "<group>"; };
+		36828BE416186D5D002097E8 /* PayoutTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayoutTable.h; sourceTree = "<group>"; };
+		36828BE516186D5D002097E8 /* PayoutTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayoutTable.m; sourceTree = "<group>"; };
 		3688E29715DF34CA000112CB /* Video Poker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Video Poker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3688E29B15DF34CA000112CB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3688E29E15DF34CA000112CB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -75,6 +76,7 @@
 		361AFB931615450A00AF8D9F /* OTHERS */ = {
 			isa = PBXGroup;
 			children = (
+				3688E2B015DF34CB000112CB /* MainMenu.xib */,
 				3688E2A215DF34CA000112CB /* Supporting Files */,
 				3688E29A15DF34CA000112CB /* Frameworks */,
 				3688E29815DF34CA000112CB /* Products */,
@@ -123,11 +125,9 @@
 			children = (
 				3688E2AD15DF34CA000112CB /* AppDelegate.h */,
 				3688E2AE15DF34CA000112CB /* AppDelegate.m */,
-				3688E2B015DF34CB000112CB /* MainMenu.xib */,
 				3688E2C915DF358A000112CB /* PokerTableWC.h */,
 				3688E2CA15DF358A000112CB /* PokerTableWC.m */,
 				3688E2CC15DF361B000112CB /* PokerTableWindow.xib */,
-				366AF90D15DF649F00635FDB /* DealButton.png */,
 				361AFBA51615691600AF8D9F /* NSCountedSet+SuperCountedSet.h */,
 				361AFBA61615691600AF8D9F /* NSCountedSet+SuperCountedSet.m */,
 			);
@@ -163,6 +163,8 @@
 				366AF90A15DF610D00635FDB /* PokerHand+HandExplanationStrings.m */,
 				364776FA15EA037200159924 /* VideoPokerRound.h */,
 				364776FB15EA037200159924 /* VideoPokerRound.m */,
+				36828BE416186D5D002097E8 /* PayoutTable.h */,
+				36828BE516186D5D002097E8 /* PayoutTable.m */,
 			);
 			name = Model;
 			path = "Video Poker";
@@ -223,7 +225,6 @@
 				3688E2AC15DF34CA000112CB /* Credits.rtf in Resources */,
 				3688E2B215DF34CB000112CB /* MainMenu.xib in Resources */,
 				3688E2CD15DF361B000112CB /* PokerTableWindow.xib in Resources */,
-				366AF90E15DF649F00635FDB /* DealButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +245,7 @@
 				366AF90B15DF610D00635FDB /* PokerHand+HandExplanationStrings.m in Sources */,
 				364776FC15EA037200159924 /* VideoPokerRound.m in Sources */,
 				361AFBA71615691600AF8D9F /* NSCountedSet+SuperCountedSet.m in Sources */,
+				36828BE616186D5D002097E8 /* PayoutTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +274,7 @@
 				3688E2B115DF34CB000112CB /* en */,
 			);
 			name = MainMenu.xib;
+			path = "Video Poker";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
