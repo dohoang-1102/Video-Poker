@@ -22,32 +22,20 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-//    _ptwc = [[PokerTableWC alloc] initWithWindowNibName: @"PokerTableWindow"];
-//    [_ptwc showWindow: self];
+    _ptwc = [[PokerTableWC alloc] initWithWindowNibName: @"PokerTableWindow"];
+    [_ptwc showWindow: self];
     
     
-    while (TRUE) {
-        Deck *deck = [Deck shuffledDeck];
-        PokerHand* hand = [PokerHand pokerHandFromDeck: deck];
-        
-        if (hand.result == PokerHandResultStraight) {
+    NSNotificationCenter *ns = [NSNotificationCenter defaultCenter];
 
-            NSLog(@"Straight");
-            NSCountedSet *suits = [NSCountedSet set];
-            for (Card *aCard in hand.cards) {
-                [suits addObject: aCard.suitString];
-            }
-
-            if (suits.count == 1)
-                NSLog(@"%@", hand);
-        }
+    [ns addObserverForName: @"notif" object: nil queue: nil usingBlock:^(NSNotification *note) {
+        NSLog(@"%@", note.object);
+    }];
     
-    }
-    
-    
-    
-    
-    
+    NSNotification *notif = [NSNotification notificationWithName: @"notif" object: @69];
+    [ns postNotification: notif];
 }
+
+
 
 @end
