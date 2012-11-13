@@ -13,6 +13,11 @@
 
 @property (strong) PokerHand *theHand;
 
+@property (assign) NSInteger betAmount;
+
+@property (assign) BOOL mayDealCards;
+@property (assign) BOOL acceptingBets;
+@property (assign) BOOL hasDealtCards;
 @property (assign) BOOL hasDiscarded;
 @property (assign) BOOL canShowHandResult;
 
@@ -23,5 +28,9 @@
 @property (assign) BOOL holdCardFive;
 
 -(void)moveToNextRoundPhase;
+
+-(void)addOneToBet;
+-(void)betFullBet;
+-(void)clearBet;
 
 @end

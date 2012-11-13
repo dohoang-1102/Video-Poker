@@ -12,6 +12,7 @@
 #import "PokerHand.h"
 #import "VideoPokerRound.h"
 #import "PokerHand+HandExplanationStrings.h"
+#import "UserMoney.h"
 
 
 static NSString* const holdCardString = @"HOLD";
@@ -51,6 +52,8 @@ static NSString* const holdCardString = @"HOLD";
     _currentRound = [[VideoPokerRound alloc] init];
     [self updateDealButtonLabel];
     [self updateCardButtonLabels];
+    [self updateRemainingMoneyLabel];
+    [self updateBetLabel];
 }
 
 
@@ -78,6 +81,21 @@ static NSString* const holdCardString = @"HOLD";
 
 
 #pragma mark - Update labels
+
+-(void)updateRemainingMoneyLabel
+{
+    NSInteger balance = [UserMoney reminingMoney];
+    NSString *balanceString = [NSString stringWithFormat: @"%ld", balance];
+    _remainingMoneyLabel.stringValue = balanceString;
+}
+
+
+-(void)updateBetLabel
+{
+    NSString *betAmountString = @(_currentRound.betAmount).stringValue;
+    _betAmountLabel.stringValue = betAmountString;
+}
+
 
 -(void)updateResultLabel
 {
@@ -120,6 +138,8 @@ static NSString* const holdCardString = @"HOLD";
 #pragma mark - User Interaction
 
 
+
+
 - (IBAction)dealButtonPushed:(id)sender
 {
     [_currentRound moveToNextRoundPhase];
@@ -137,6 +157,9 @@ static NSString* const holdCardString = @"HOLD";
     [self updateDealButtonLabel];
     [self updateCardButtonLabels];
     [self updateResultLabel];
+
+    [self updateRemainingMoneyLabel];
+    [self updateBetLabel];
 }
 
 
@@ -178,7 +201,28 @@ static NSString* const holdCardString = @"HOLD";
 }
 
 
+- (IBAction)betOneButtonPushed:(id)sender
+{
+    [_currentRound addOneToBet];
+    [self updateBetLabel];
+    [self updateRemainingMoneyLabel];
+}
 
+
+- (IBAction)betFiveButtonPushed:(id)sender
+{
+    [_currentRound betFullBet];
+    [self updateBetLabel];
+    [self updateRemainingMoneyLabel];
+}
+
+
+- (IBAction)clearBetsButtonPushed:(id)sender
+{
+    [_currentRound clearBet];
+    [self updateBetLabel];
+    [self updateRemainingMoneyLabel];
+}
 
 
 @end

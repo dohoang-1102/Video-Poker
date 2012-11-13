@@ -23,6 +23,7 @@
 		3688E2CB15DF358A000112CB /* PokerTableWC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3688E2CA15DF358A000112CB /* PokerTableWC.m */; };
 		3688E2CD15DF361B000112CB /* PokerTableWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3688E2CC15DF361B000112CB /* PokerTableWindow.xib */; };
 		3688E2D415DF3C1E000112CB /* PokerHand.m in Sources */ = {isa = PBXBuildFile; fileRef = 3688E2D315DF3C1E000112CB /* PokerHand.m */; };
+		36DCCFBF16187BE90098D330 /* UserMoney.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCCFBE16187BE90098D330 /* UserMoney.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,8 @@
 		3688E2CC15DF361B000112CB /* PokerTableWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PokerTableWindow.xib; sourceTree = "<group>"; };
 		3688E2D215DF3C1E000112CB /* PokerHand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PokerHand.h; sourceTree = "<group>"; };
 		3688E2D315DF3C1E000112CB /* PokerHand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PokerHand.m; sourceTree = "<group>"; };
+		36DCCFBD16187BE90098D330 /* UserMoney.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMoney.h; sourceTree = "<group>"; };
+		36DCCFBE16187BE90098D330 /* UserMoney.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMoney.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +168,8 @@
 				364776FB15EA037200159924 /* VideoPokerRound.m */,
 				36828BE416186D5D002097E8 /* PayoutTable.h */,
 				36828BE516186D5D002097E8 /* PayoutTable.m */,
+				36DCCFBD16187BE90098D330 /* UserMoney.h */,
+				36DCCFBE16187BE90098D330 /* UserMoney.m */,
 			);
 			name = Model;
 			path = "Video Poker";
@@ -246,6 +251,7 @@
 				364776FC15EA037200159924 /* VideoPokerRound.m in Sources */,
 				361AFBA71615691600AF8D9F /* NSCountedSet+SuperCountedSet.m in Sources */,
 				36828BE616186D5D002097E8 /* PayoutTable.m in Sources */,
+				36DCCFBF16187BE90098D330 /* UserMoney.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

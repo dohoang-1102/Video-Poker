@@ -5,5 +5,7 @@
 
 #import <Cocoa/Cocoa.h>
 @interface PokerTableWC : NSWindowController
+@property (weak) IBOutlet NSTextField *remainingMoneyLabel;
+@property (weak) IBOutlet NSTextField *betAmountLabel;
 
 @end

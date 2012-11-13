@@ -14,6 +14,8 @@
 #import "Deck.h"
 #import "Card.h"
 
+#import "UserMoney.h"
+
 @interface AppDelegate ()
 @property (strong) PokerTableWC *ptwc;
 @end
@@ -22,18 +24,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [UserMoney setRemainingMoney: 500];
+    
     _ptwc = [[PokerTableWC alloc] initWithWindowNibName: @"PokerTableWindow"];
     [_ptwc showWindow: self];
-    
-    
-    NSNotificationCenter *ns = [NSNotificationCenter defaultCenter];
-
-    [ns addObserverForName: @"notif" object: nil queue: nil usingBlock:^(NSNotification *note) {
-        NSLog(@"%@", note.object);
-    }];
-    
-    NSNotification *notif = [NSNotification notificationWithName: @"notif" object: @69];
-    [ns postNotification: notif];
 }
 
 
